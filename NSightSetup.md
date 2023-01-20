@@ -49,8 +49,8 @@ https://user-images.githubusercontent.com/43923184/153686284-ce2b83de-ba14-437a-
             "type": "cuda-gdb",
             "request": "launch",
             "gdb": "cuda-gdb",
-            "program": "/home/rchandan/cse160-WI22/NSightDebugging/solution",
-            "arguments": ["-e /home/rchandan/cse160-WI22/NSightDebugging/Dataset/0/output.raw -i /home/rchandan/cse160-WI22/NSightDebugging/Dataset/0/input1.raw,/home/rchandan/cse160-WI22/NSightDebugging/Dataset/0/input1.raw -t matrix"]
+            "program": "/home/rchandan/cse160-WI22/PA2/solution",
+            "arguments": ["-e /home/rchandan/cse160-WI22/PA2/Dataset/0/output.raw -i /home/rchandan/cse160-WI22/PA2/Dataset/0/input1.raw,/home/rchandan/cse160-WI22/NSightDebugging/Dataset/0/input1.raw -t vector"]
         }
     ]
 }
@@ -63,7 +63,7 @@ https://user-images.githubusercontent.com/43923184/153686371-f7c2b5a7-277b-4265-
 https://user-images.githubusercontent.com/43923184/153686736-4f7c25bf-738e-480a-982c-f71774720482.mov
 
 
-Watch the Discussion section held on Feburuary 11th for more on using the NSight debugger!
+Stay tuned for a Discussion section for more on using the NSight debugger!
 
 
 
