@@ -30,6 +30,7 @@ int main(int argc, char **argv) {
   //@@ Allocate GPU memory here
   cudaMalloc((void **) &deviceInput1, inputLength * sizeof(float));
   cudaMalloc((void **) &deviceInput2, inputLength * sizeof(float));
+  cudaMalloc((void **) &deviceOutput, inputLength * sizeof(float));
   gpuTKTime_stop(GPU, "Allocating GPU memory.");
 
   gpuTKTime_start(GPU, "Copying input memory to the GPU.");
@@ -45,7 +46,7 @@ int main(int argc, char **argv) {
 
   gpuTKTime_start(Compute, "Performing CUDA computation");
   //@@ Launch the GPU Kernel here
-
+  vecAdd<<<grid_size,block_size>>>(deviceInput1, deviceInput2, deviceOutput, inputLength);
   cudaDeviceSynchronize();
   gpuTKTime_stop(Compute, "Performing CUDA computation");
 
