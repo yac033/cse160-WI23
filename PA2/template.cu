@@ -28,7 +28,8 @@ int main(int argc, char **argv) {
 
   gpuTKTime_start(GPU, "Allocating GPU memory.");
   //@@ Allocate GPU memory here
-
+  cudaMalloc((void **) &deviceInput1, inputLength * sizeof(float));
+  cudaMalloc((void **) &deviceInput2, inputLength * sizeof(float));
   gpuTKTime_stop(GPU, "Allocating GPU memory.");
 
   gpuTKTime_start(GPU, "Copying input memory to the GPU.");
