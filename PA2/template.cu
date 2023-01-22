@@ -34,7 +34,8 @@ int main(int argc, char **argv) {
 
   gpuTKTime_start(GPU, "Copying input memory to the GPU.");
   //@@ Copy memory to the GPU here
-
+  cudaMemcpy(deviceInput1, hostInput1, inputLength * sizeof(float), cudaMemcpyHostToDevice);
+  cudaMemcpy(deviceInput2, hostInput2, inputLength * sizeof(float), cudaMemcpyHostToDevice);
   gpuTKTime_stop(GPU, "Copying input memory to the GPU.");
 
   //@@ Initialize the grid and block dimensions here
