@@ -57,7 +57,7 @@ int main(int argc, char **argv) {
 
   gpuTKTime_start(GPU, "Freeing GPU Memory");
   //@@ Free the GPU memory here
-
+  cudaFree(deviceInput1);cudaFree(deviceInput2);cudaFree(deviceOutput);
   gpuTKTime_stop(GPU, "Freeing GPU Memory");
 
   gpuTKSolution(args, hostOutput, inputLength);
