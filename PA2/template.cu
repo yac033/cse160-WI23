@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
 
   gpuTKTime_start(Copy, "Copying output memory to the CPU");
   //@@ Copy the GPU memory back to the CPU here
-
+  cudaMemcpy(hostOutput, deviceOutput, inputLength * sizeof(float), cudaMemcpyDeviceToHost);
   gpuTKTime_stop(Copy, "Copying output memory to the CPU");
 
   gpuTKTime_start(GPU, "Freeing GPU Memory");
