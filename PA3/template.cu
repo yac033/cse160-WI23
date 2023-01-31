@@ -55,7 +55,9 @@ int main(int argc, char **argv) {
 
   gpuTKTime_start(GPU, "Allocating GPU memory.");
   //@@ Allocate GPU memory here
-
+  cudaMalloc((void **) &deviceA, (numARows * numAColumns) * sizeof(float));
+  cudaMalloc((void **) &deviceB, (numBRows * numBColumns) * sizeof(float));
+  cudaMalloc((void **) &deviceC, (numCRows * numCColumns) * sizeof(float));
   gpuTKTime_stop(GPU, "Allocating GPU memory.");
 
   gpuTKTime_start(GPU, "Copying input memory to the GPU.");
