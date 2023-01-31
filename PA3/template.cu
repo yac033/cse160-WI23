@@ -12,9 +12,17 @@
   } while (0)
 
 // Compute C = A * B
-__global__ void matrixMultiply(float *A, float *B, float *C, int width) {
+__global__ void matrixMultiply(float *A, float *B, float *C, int width, int numBCol) {
   //@@ Insert code to implement matrix multiplication here
-  int i = blockIdx.x * blockDim.x + threadIdx.x;
+  int Row = blockIdx.y * blockDim.y + threadIdx.y;
+  int Col = blockIdx.x * blockDim.x + threadIdx.x;
+  if((Row < width) && (Col << width)){
+    float Pvalue = 0;
+    for(int k = 0; k < width; k++){
+      Pvalue += A[Row * width + k] * B[k * numBCol + Col];
+    }
+    C[Row * numBCol + Col] = Pvalue;
+  }
 
 }
 
@@ -78,7 +86,7 @@ int main(int argc, char **argv) {
 
   gpuTKTime_start(Compute, "Performing CUDA computation");
   //@@ Launch the GPU Kernel here
-  matrixMultiply<<<dimGrid,dimBlock>>>(deviceA, deviceB, deviceC, width);
+  matrixMultiply<<<dimGrid,dimBlock>>>(deviceA, deviceB, deviceC, width, numBColumns);
   cudaDeviceSynchronize();
   gpuTKTime_stop(Compute, "Performing CUDA computation");
 
