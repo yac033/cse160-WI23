@@ -15,8 +15,7 @@
 __global__ void matrixMultiply(float *A, float *B, float *C, int width) {
   //@@ Insert code to implement matrix multiplication here
   int i = blockIdx.x * blockDim.x + threadIdx.x;
-  int row = i / numCColumns;
-  int col = i % numCColumns;
+
 }
 
 int main(int argc, char **argv) {
