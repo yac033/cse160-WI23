@@ -72,7 +72,10 @@ int main(int argc, char **argv) {
   dim3 block_size(256, 1, 1);
   gpuTKTime_start(Compute, "Performing CUDA computation");
   //@@ Launch the GPU Kernel here
-
+  matrixMultiply<<<grid_size,block_size>>>(deviceA, deviceB, deviceC, numARows,
+                                            numAColumns, numBRows,
+                                            numBColumns, numCRows,
+                                            numCColumns);
   cudaDeviceSynchronize();
   gpuTKTime_stop(Compute, "Performing CUDA computation");
 
