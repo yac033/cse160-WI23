@@ -80,7 +80,7 @@ int main(int argc, char **argv) {
 
   gpuTKTime_start(Compute, "Performing CUDA computation");
   //@@ Launch the GPU Kernel here
-  matrixMultiply<<<dimGrid,dimBlock>>>(deviceA, deviceB, deviceC, numARows,
+  matrixMultiply<<<grid_size,block_size>>>(deviceA, deviceB, deviceC, numARows,
                                             numAColumns, numBRows,
                                             numBColumns, numCRows,
                                             numCColumns);
