@@ -46,6 +46,8 @@ int main(int argc, char **argv) {
   numCRows    = numARows;
   numCColumns = numBColumns;
   //@@ Allocate the hostC matrix
+  hostC = (float *)gpuTKImport(gpuTKArg_getInputFile(args, 1), &numCRows,
+                            &numCColumns);
   gpuTKTime_stop(Generic, "Importing data and creating memory on host");
 
   gpuTKLog(TRACE, "The dimensions of A are ", numARows, " x ", numAColumns);
