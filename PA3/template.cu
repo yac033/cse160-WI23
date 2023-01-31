@@ -16,7 +16,7 @@ __global__ void matrixMultiply(float *A, float *B, float *C, int width, int numB
   //@@ Insert code to implement matrix multiplication here
   int Row = blockIdx.y * blockDim.y + threadIdx.y;
   int Col = blockIdx.x * blockDim.x + threadIdx.x;
-  if((Row < width) && (Col < numBCol)){
+  if((Row < numBCol) && (Col < width)){
     float Pvalue = 0;
     for(int k = 0; k < width; k++){
       Pvalue += A[Row * width + k] * B[k * numBCol + Col];
