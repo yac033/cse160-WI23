@@ -18,7 +18,7 @@ __global__ void matrixMultiply(float *A, float *B, float *C, int width, int numB
   int Col = blockIdx.x * blockDim.x + threadIdx.x;
   if((Row < width) && (Col < numBCol)){
     float Pvalue = 0;
-    for(int k = 0; k < width; ++k){
+    for(int k = 0; k < width; k++){
       Pvalue += A[Row * width + k] * B[k * numBCol + Col];
     }
     C[Row * numBCol + Col] = Pvalue;
