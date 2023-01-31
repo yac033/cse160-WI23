@@ -87,6 +87,7 @@ int main(int argc, char **argv) {
 
   gpuTKTime_start(Compute, "Performing CUDA computation");
   //@@ Launch the GPU Kernel here
+  gpuTKLog(TRACE, "dimGrid ", dimGrid);
   matrixMultiply<<<dimGrid,dimBlock>>>(deviceA, deviceB, deviceC, width, numBColumns, numCRows, numCColumns);
   cudaDeviceSynchronize();
   gpuTKTime_stop(Compute, "Performing CUDA computation");
