@@ -54,7 +54,7 @@ int main(int argc, char **argv) {
   //@@ Set numCRows and numCColumns
   numCRows    = numARows;
   numCColumns = numBColumns;
-  gpuTKLog(TRACE, "NumCRows and Col ", numCRows, " x ", numCColumns )
+  gpuTKLog(TRACE, "NumCRows and Col ", numCRows, " x ", numCColumns );
   //@@ Set width of the matrix
   width = numARows;
   //@@ Allocate the hostC matrix
