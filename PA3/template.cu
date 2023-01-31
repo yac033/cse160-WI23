@@ -12,10 +12,7 @@
   } while (0)
 
 // Compute C = A * B
-__global__ void matrixMultiply(float *A, float *B, float *C, int numARows,
-                               int numAColumns, int numBRows,
-                               int numBColumns, int numCRows,
-                               int numCColumns) {
+__global__ void matrixMultiply(float *A, float *B, float *C, int width) {
   //@@ Insert code to implement matrix multiplication here
   int i = blockIdx.x * blockDim.x + threadIdx.x;
   int row = i / numCColumns;
@@ -37,6 +34,7 @@ int main(int argc, char **argv) {
   int numCRows;    // number of rows in the matrix C (you have to set this)
   int numCColumns; // number of columns in the matrix C (you have to set
                    // this)
+  int width;
   int BLOCK_WIDTH = 4;
 
   args = gpuTKArg_read(argc, argv);
@@ -49,6 +47,8 @@ int main(int argc, char **argv) {
   //@@ Set numCRows and numCColumns
   numCRows    = numARows;
   numCColumns = numBColumns;
+  //@@ Set width of the matrix
+  width = numARows;
   //@@ Allocate the hostC matrix
   hostC = (float *)malloc((numCRows * numCColumns) * sizeof(float));
 
@@ -73,17 +73,13 @@ int main(int argc, char **argv) {
   //@@ Initialize the grid and block dimensions here
   // dim3 dimGrid(ceil((1.0*numCRows)/BLOCK_WIDTH), 
 	// 		 ceil((1.0*numCRows)/BLOCK_WIDTH), 1);
-  // dim3 dimBlock(BLOCK_WIDTH, BLOCK_WIDTH, 1);
-  dim3 grid_size((numCRows * numCColumns)/256, 1, 1);
-  if ((numCRows * numCColumns)%256) grid_size.x++;
-  dim3 block_size(256, 1, 1);
+  //dim3 dimBlock(BLOCK_WIDTH, BLOCK_WIDTH, 1);
+  dim3 dimGrid(ceil((1.0*width)/BLOCK_WIDTH),ceil((1.0*width)/BLOCK_WIDTH),1);
+  dim3 dimBlock(BLOCK_WIDTH,BLOCK_WIDTH,1);
 
   gpuTKTime_start(Compute, "Performing CUDA computation");
   //@@ Launch the GPU Kernel here
-  matrixMultiply<<<grid_size,block_size>>>(deviceA, deviceB, deviceC, numARows,
-                                            numAColumns, numBRows,
-                                            numBColumns, numCRows,
-                                            numCColumns);
+  matrixMultiply<<<dimGrid,dimBlock>>>(deviceA, deviceB, deviceC, width);
   cudaDeviceSynchronize();
   gpuTKTime_stop(Compute, "Performing CUDA computation");
 
