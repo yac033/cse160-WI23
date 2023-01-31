@@ -27,10 +27,10 @@ int main(int argc, char **argv) {
   float *deviceA;
   float *deviceB;
   float *deviceC;
-  int numARows;    // number of rows in the matrix A
-  int numAColumns; // number of columns in the matrix A
-  int numBRows;    // number of rows in the matrix B
-  int numBColumns; // number of columns in the matrix B
+  int numARows;    // number of rows in the matrix A3
+  int numAColumns; // number of columns in the matrix A4
+  int numBRows;    // number of rows in the matrix B4
+  int numBColumns; // number of columns in the matrix B5
   int numCRows;    // number of rows in the matrix C (you have to set this)
   int numCColumns; // number of columns in the matrix C (you have to set
                    // this)
@@ -43,8 +43,8 @@ int main(int argc, char **argv) {
   hostB = (float *)gpuTKImport(gpuTKArg_getInputFile(args, 1), &numBRows,
                             &numBColumns);
   //@@ Set numCRows and numCColumns
-  numCRows    = 0;
-  numCColumns = 0;
+  numCRows    = numARows;
+  numCColumns = numBColumns;
   //@@ Allocate the hostC matrix
   gpuTKTime_stop(Generic, "Importing data and creating memory on host");
 
