@@ -82,12 +82,13 @@ int main(int argc, char **argv) {
   // dim3 dimGrid(ceil((1.0*numCRows)/BLOCK_WIDTH), 
 	// 		 ceil((1.0*numCRows)/BLOCK_WIDTH), 1);
   //dim3 dimBlock(BLOCK_WIDTH, BLOCK_WIDTH, 1);
-  dim3 dimGrid(ceil((1.0*width)/BLOCK_WIDTH),ceil((1.0*width)/BLOCK_WIDTH),1);
+  dim3 dimGrid(ceil((1.0*numCColumns)/BLOCK_WIDTH),ceil((1.0*numCRows)/BLOCK_WIDTH),1);
   dim3 dimBlock(BLOCK_WIDTH,BLOCK_WIDTH,1);
 
   gpuTKTime_start(Compute, "Performing CUDA computation");
   //@@ Launch the GPU Kernel here
-  gpuTKLog(TRACE, "dimGrid ", dimGrid.x);
+  gpuTKLog(TRACE, "dimGrid ", dimGrid.x,  " x ", dimGrid.y);
+  gpuTKLog(TRACE, "dimBlock ", dimBlock.x,  " x ", dimBlock.y);
   matrixMultiply<<<dimGrid,dimBlock>>>(deviceA, deviceB, deviceC, width, numBColumns, numCRows, numCColumns);
   cudaDeviceSynchronize();
   gpuTKTime_stop(Compute, "Performing CUDA computation");
