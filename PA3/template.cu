@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
   int numCColumns; // number of columns in the matrix C (you have to set
                    // this)
   int width;
-  int BLOCK_WIDTH = 4;
+  int BLOCK_WIDTH = 8;
 
   args = gpuTKArg_read(argc, argv);
 
