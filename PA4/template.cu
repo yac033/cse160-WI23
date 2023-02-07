@@ -12,7 +12,7 @@
   } while (0)
 
 // Compute C = A * B
-__global__ void matrixMultiply(float *A, float *B, float *C, int width, int numARow, int numBCol, int numBRow, int numCRow, int numCCol) {
+__global__ void matrixMultiply(float *A, float *B, float *C, int width, int numACol, int numARow, int numBCol, int numBRow, int numCRow, int numCCol) {
   //@@ Insert code to implement matrix multiplication here
   int TILEWIDTH = 16;
   __shared__ float subTileM[16][16];
@@ -27,7 +27,7 @@ __global__ void matrixMultiply(float *A, float *B, float *C, int width, int numA
   int AId;
   int BId;
 
-  if((Row < numCRow) && (Col < numCCol)){
+  
     float Pvalue = 0;
     // for(int k = 0; k < width; k++){
     //   Pvalue += A[Row * width + k] * B[k * numBCol + Col];
@@ -37,35 +37,41 @@ __global__ void matrixMultiply(float *A, float *B, float *C, int width, int numA
       limter += 1;
     }
     for (int m = 0; m<limter; ++m){
-      AId = Row * width + (m * TILEWIDTH + tx); // 
+      AId = Row * numACol + (m * TILEWIDTH + tx); // 
       BId = (m * TILEWIDTH + ty) * numBCol + Col; // 
       // subTileM[ty][tx] = A[AId];
       // subTileN[ty][tx] = B[BId];
       // __syncthreads();
-      if(AId <= (width * numARow) && BId <= (numBCol * numBRow)){
+      if((Row <= (numARow) && (m * TILEWIDTH + tx <= numACol))){
         subTileM[ty][tx] = A[AId];
+      }else{
+        subTileM[ty][tx] = 0;
+      }
+      if((Col <= (numBCol)) && ((m * TILEWIDTH + ty) < numBRow)){
         subTileN[ty][tx] = B[BId];
       }else{
-        continue;
+        subTileN[ty][tx] = 0;
       }
-      if(Row == numCRow - 1){
-       for(int i = 0; i < 16; i++){
-        subTileN[i][tx] = B[(m * TILEWIDTH + i) * numBCol + Col];
-       }
-      }
-      if(Col == numCCol - 1){
-       for(int i = 0; i < 16; i++){
-        subTileN[i][tx] = B[(m * TILEWIDTH + i) * numBCol + Col];
-       }
-      }
+      // if(Row == numCRow - 1){
+      //  for(int i = 0; i < 16; i++){
+      //   subTileN[i][tx] = B[(m * TILEWIDTH + i) * numBCol + Col];
+      //  }
+      // }
+      // if(Col == numCCol - 1){
+      //  for(int i = 0; i < 16; i++){
+      //   subTileN[i][tx] = B[(m * TILEWIDTH + i) * numBCol + Col];
+      //  }
+      // }
       __syncthreads();
-      for(int k = 0; k < TILEWIDTH; ++k){
-          Pvalue += subTileM[ty][k] * subTileN[k][tx];
-      }
+        for(int k = 0; k < TILEWIDTH; ++k){
+            Pvalue += subTileM[ty][k] * subTileN[k][tx];
+        }
       __syncthreads();
     }
-    C[Row * numBCol + Col] = Pvalue;
-  }
+    if((Row < numCRow) && (Col < numCCol)){
+      C[Row * numBCol + Col] = Pvalue;
+    }
+    
 
 }
 
@@ -129,7 +135,7 @@ int main(int argc, char **argv) {
   //@@ Launch the GPU Kernel here
   gpuTKLog(TRACE, "dimGrid ", dimGrid.x,  " x ", dimGrid.y);
   gpuTKLog(TRACE, "dimBlock ", dimBlock.x,  " x ", dimBlock.y);
-  matrixMultiply<<<dimGrid,dimBlock>>>(deviceA, deviceB, deviceC, width, numARows, numBColumns, numBRows, numCRows, numCColumns);
+  matrixMultiply<<<dimGrid,dimBlock>>>(deviceA, deviceB, deviceC, width, numAColumns,numARows, numBColumns, numBRows, numCRows, numCColumns);
   cudaDeviceSynchronize();
   gpuTKTime_stop(Compute, "Performing CUDA computation");
 
