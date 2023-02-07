@@ -43,9 +43,9 @@ __global__ void matrixMultiply(float *A, float *B, float *C, int width, int numA
       // subTileN[ty][tx] = B[BId];
       // __syncthreads();
       if((Row <= (numARow) && (m * TILEWIDTH + tx <= numACol))){
-        subTileM[ty][tx] = A[AId];
+        subTileM[tx][ty] = A[AId];
       }else{
-        subTileM[ty][tx] = 0;
+        subTileM[tx][ty] = 0;
       }
       if((Col <= (numBCol)) && ((m * TILEWIDTH + ty) < numBRow)){
         subTileN[ty][tx] = B[BId];
@@ -64,7 +64,7 @@ __global__ void matrixMultiply(float *A, float *B, float *C, int width, int numA
       // }
       __syncthreads();
         for(int k = 0; k < TILEWIDTH; ++k){
-            Pvalue += subTileM[ty][k] * subTileN[k][tx];
+            Pvalue += subTileM[k][ty] * subTileN[k][tx];
         }
       __syncthreads();
     }
